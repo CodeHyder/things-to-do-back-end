@@ -1,8 +1,8 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const connectDB = require('./config/database');
+const connectDB = require('./src/config/database.js');
 const cors = require('cors'); // Importar o pacote CORS
-  const taskRoutes = require('./routes/taskRoutes');
+const taskRoutes = require('./src/routes/taskRoutes.js');
 
 // Configurações
 dotenv.config();
