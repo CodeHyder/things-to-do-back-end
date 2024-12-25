@@ -1,17 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const taskController = require('../controllers/taskController');
+const authenticate = require('../middleware/authMiddleware'); 
 
-// Rota para listar todas as tarefas
-router.get('/tasks', taskController.getAllTasks);
-
-// Rota para criar uma nova tarefa
-router.post('/tasks', taskController.createTask);
-
-// Rota para atualizar uma tarefa existente
-router.put('/tasks/:id', taskController.updateTask);
-
-// Rota para deletar uma tarefa existente
-router.delete('/tasks/:id', taskController.deleteTask);
+router.get('/tasks', authenticate, taskController.getAllTasks);
+router.post('/tasks', authenticate, taskController.createTask);
+router.put('/tasks/:id', authenticate, taskController.updateTask);
+router.delete('/tasks/:id', authenticate, taskController.deleteTask);
 
 module.exports = router;
