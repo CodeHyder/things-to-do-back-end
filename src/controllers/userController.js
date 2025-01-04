@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('../models/User.js');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
@@ -15,9 +15,9 @@ const generateToken = (userId) => {
     { id: userId },
     process.env.JWT_SECRET,
     {
-      expiresIn: '1h', 
+      expiresIn: '1h',
       audience: 'your-app-name',
-      issuer: 'your-app-name',  
+      issuer: 'your-app-name',
     }
   );
 };
@@ -26,18 +26,18 @@ exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    
+
     if (!email || !password) {
       return res.status(400).json({ message: 'Email e senha são obrigatórios.' });
     }
 
-    
+
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: MESSAGES.userNotFound });
     }
 
-    
+
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: MESSAGES.invalidPassword });
@@ -55,7 +55,7 @@ exports.registerUser = async (req, res) => {
   const { email, password, username } = req.body;
 
   try {
-    
+
     if (!email || !password || !username) {
       return res.status(400).json({ message: 'Email, senha e username são obrigatórios.' });
     }
@@ -75,6 +75,9 @@ exports.registerUser = async (req, res) => {
 
     res.status(201).json({ message: MESSAGES.registrationSuccess });
   } catch (error) {
+    if (error.message && error.message.startsWith('Erro de validação')) {
+      return res.status(400).json({ error: error.message });
+    }
     res.status(500).json({ message: 'Erro ao registrar usuário.', error });
   }
 };

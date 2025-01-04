@@ -5,6 +5,7 @@ const cors = require('cors');
 const taskRoutes = require('./src/routes/taskRoutes.js');
 const userRoutes = require('./src/routes/userRoutes.js');
 
+
 dotenv.config();
 connectDB();
 
@@ -19,7 +20,6 @@ app.get('/', (req, res) => {
 
 app.use('/api', taskRoutes);
 app.use('/api/users', userRoutes);
-
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
