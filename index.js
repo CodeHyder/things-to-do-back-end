@@ -3,8 +3,7 @@ const dotenv = require('dotenv');
 const connectDB = require('./src/config/database.js');
 const cors = require('cors'); 
 const taskRoutes = require('./src/routes/taskRoutes.js');
-const userRoutes = require('./src/routes/userRoutes.js')
-
+const userRoutes = require('./src/routes/userRoutes.js');
 
 dotenv.config();
 connectDB();

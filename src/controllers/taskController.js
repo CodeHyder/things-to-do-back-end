@@ -3,12 +3,8 @@ const Task = require('../models/Task');
 
 exports.getAllTasks = async (req, res) => {
   try {
-    
     const userId = req.user.id;
-
-    
     const tasks = await Task.find({ user: userId });
-
     res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ message: 'Erro ao buscar tarefas', error });
