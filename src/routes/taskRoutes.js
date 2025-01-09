@@ -5,6 +5,7 @@ const authenticate = require('../middleware/authMiddleware');
 
 router.get('/tasks', authenticate, taskController.getAllTasks);
 router.post('/tasks', authenticate, taskController.createTask);
+router.put('/tasks/reorder', authenticate, taskController.reorderTasks);
 router.put('/tasks/:id', authenticate, taskController.updateTask);
 router.delete('/tasks/:id', authenticate, taskController.deleteTask);
 
