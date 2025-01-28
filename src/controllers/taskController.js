@@ -37,6 +37,7 @@ exports.createTask = async (req, res) => {
 
     res.status(201).json(savedTask);
   } catch (error) {
+    console.log('Erro no createTask:', error);
     res.status(500).json({ message: 'Erro ao criar a tarefa', error });
   }
 };
