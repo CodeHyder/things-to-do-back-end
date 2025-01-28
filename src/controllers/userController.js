@@ -60,11 +60,6 @@ exports.registerUser = async (req, res) => {
       return res.status(400).json({ message: 'Email, senha e username são obrigatórios.' });
     }
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: MESSAGES.emailInUse });
-    }
-
     const newUser = new User({
       email,
       password,
@@ -74,9 +69,15 @@ exports.registerUser = async (req, res) => {
     await newUser.save();
 
     res.status(201).json({ message: MESSAGES.registrationSuccess });
-  } catch (error) {
+  } catch (error) { 
     if (error.message && error.message.startsWith('Erro de validação')) {
       return res.status(400).json({ error: error.message });
+    }
+    else if (error.code === 11000) {
+      const field = error.keyValue.email ? 'email' : 'username';
+      return res.status(400).json({ 
+        error: `Já existe um usuário com este ${field}.` 
+      });
     }
     res.status(500).json({ message: 'Erro ao registrar usuário.', error });
   }
