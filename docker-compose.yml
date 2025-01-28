@@ -6,8 +6,8 @@ services:
     ports:
       - "3000:3000"
     environment:
-      MONGO_URI: "mongodb+srv://Raphael:QGvKGoP2XUZt0UM5@task-list.l1nbg.mongodb.net/?retryWrites=true&w=majority&appName=task-list"
-      JWT_SECRET: 80c9cd89d8026730941f3fe2ccf3b42ceaa293bc78b828b181c5992038810e21
+      - MONGO_URI=${MONGO_URI}
+      - JWT_SECRET=${JWT_SECRET}
     volumes:
       - .:/app
       - /app/node_modules
