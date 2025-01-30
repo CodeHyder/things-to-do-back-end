@@ -23,19 +23,20 @@ const generateToken = (userId) => {
 };
 
 exports.loginUser = async (req, res) => {
-  const { email, password } = req.body; 
+  const { email, password } = req.body;
 
-  try { 
+  try {
     if (!email || !password) {
       return res.status(400).json({ message: 'Email e senha são obrigatórios.' });
     }
 
 
     const user = await User.findOne({ email });
-    const userId = user._id;
+
     if (!user) {
       return res.status(404).json({ message: MESSAGES.userNotFound });
     }
+    const userId = user._id;
 
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -69,14 +70,14 @@ exports.registerUser = async (req, res) => {
     await newUser.save();
 
     res.status(201).json({ message: MESSAGES.registrationSuccess });
-  } catch (error) { 
+  } catch (error) {
     if (error.message && error.message.startsWith('Erro de validação')) {
       return res.status(400).json({ error: error.message });
     }
     else if (error.code === 11000) {
       const field = error.keyValue.email ? 'email' : 'username';
-      return res.status(400).json({ 
-        error: `Já existe um usuário com este ${field}.` 
+      return res.status(400).json({
+        error: `Já existe um usuário com este ${field}.`
       });
     }
     res.status(500).json({ message: 'Erro ao registrar usuário.', error });
@@ -88,10 +89,10 @@ exports.getUsername = async (req, res) => {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) return res.status(401).json({ message: 'Token não encontrado.' });
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);  
-    const userId = decoded.id; 
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.id;
 
-     
+
     if (userId !== req.params.id) {
       return res.status(403).json({ message: 'Acesso não autorizado.' });
     }
